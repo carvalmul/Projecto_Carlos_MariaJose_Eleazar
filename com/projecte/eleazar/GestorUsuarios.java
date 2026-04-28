@@ -1,19 +1,17 @@
-package com.projecte.main;
+package com.projecte.eleazar;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
-import com.projecte.eleazar.Eleazar;
-import com.projecte.mjose.Mjose;
-
-public class ProgramaPrincipal {
+public class GestorUsuarios {
     static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        //ESTA ES LA CLASE PRINCIPAL
-        System.out.println("");
+
         String opcio;
 
         do {
@@ -95,5 +93,5 @@ public class ProgramaPrincipal {
         //usuaris.add(new Usuari(nom, cognom, contrasenya, poblacio, Rol.valueOf(Rol), LocalDate.parse(fecha)))
         
     }
-    
+
 }
