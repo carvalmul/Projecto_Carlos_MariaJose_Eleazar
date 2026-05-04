@@ -35,7 +35,8 @@ public class GestorLlistes {
 
     // cargar
 
-    public List<String> carregarLlistaUsuario(String ruta) {
+    public List<String> carregarLlistaUsuario(String fitxer) {
+        String ruta = "com/projecte/usuaris/" + fitxer;
         List<String> llista = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {

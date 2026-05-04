@@ -1,4 +1,5 @@
 package com.projecte.menus;
+
 import com.projecte.gestors.*;
 import com.projecte.models.*;
 import java.util.Scanner;
@@ -56,9 +57,9 @@ public class ProgramaPrincipal {
             opcio = Integer.parseInt(sc.nextLine());
 
             switch (opcio) {
-                case 1 -> mostrarLlista("pelicules.llista");
-                case 2 -> mostrarLlista("actors.llista");
-                case 3 -> mostrarLlista("directors.llista");
+                case 1 -> mostrarLlista("pelicules");
+                case 2 -> mostrarLlista("actors");
+                case 3 -> mostrarLlista("directors");
                 case 0 -> {}
                 default -> System.out.println("Opció incorrecta");
             }
@@ -66,10 +67,11 @@ public class ProgramaPrincipal {
         } while (opcio != 0);
     }
 
-    private void mostrarLlista(String fitxer) {
+    private void mostrarLlista(String nomBase) {
+
         if (tipusCarpeta == 1) {
-            // USUARIO
-            String ruta = carpetaUsuari + "/" + fitxer;
+            // USUARIO → .llista
+            String ruta = carpetaUsuari + "/" + nomBase + ".llista";
             var llista = gestorLlistes.carregarLlistaUsuario(ruta);
 
             if (llista.isEmpty()) {
@@ -83,7 +85,8 @@ public class ProgramaPrincipal {
             }
 
         } else {
-            // GENERAL
+            // GENERAL → .dades
+            String fitxer = nomBase + ".dades";
             var llista = gestorDades.carregarLlistaGeneral(fitxer);
 
             if (llista.isEmpty()) {
@@ -146,10 +149,12 @@ public class ProgramaPrincipal {
         System.out.print("Data naixement (YYYY-MM-DD): ");
         String data = sc.nextLine();
 
+        LocalDate dataNaixement = LocalDate.parse(data);
+
         if (tipusCarpeta == 1) {
-            gestorLlistes.afegirActor(new Actor(nom, java.time.LocalDate.parse(data), cognoms), carpetaUsuari);
+            gestorLlistes.afegirActor(new Actor(nom, dataNaixement, cognoms), carpetaUsuari);
         } else {
-            gestorDades.afegirActor(new Actor(nom, java.time.LocalDate.parse(data), cognoms));
+            gestorDades.afegirActor(new Actor(nom, dataNaixement, cognoms));
         }
 
         System.out.println("Actor afegit.");
@@ -163,10 +168,12 @@ public class ProgramaPrincipal {
         System.out.print("Data naixement (YYYY-MM-DD): ");
         String data = sc.nextLine();
 
+        LocalDate dataNaixement = LocalDate.parse(data);
+
         if (tipusCarpeta == 1) {
-            gestorLlistes.afegirDirector(new Director(nom, cognoms, java.time.LocalDate.parse(data)), carpetaUsuari);
+            gestorLlistes.afegirDirector(new Director(nom, cognoms, dataNaixement), carpetaUsuari);
         } else {
-            gestorDades.afegirDirector(new Director(nom, cognoms, java.time.LocalDate.parse(data)));
+            gestorDades.afegirDirector(new Director(nom, cognoms, dataNaixement));
         }
 
         System.out.println("Director afegit.");
