@@ -10,8 +10,6 @@ import java.util.Scanner;
 public class main {
 
     public static void main(String[] args) {
-        System.out.println(new File(".").getAbsolutePath());
-
     Usuario u = new Usuario(
         1,
         "Maria",
