@@ -1,9 +1,16 @@
-package mjose;
+package com.projecte.main;
+import com.projecte.gestors.*;
+import com.projecte.models.*;
+import com.projecte.menus.*;
+
+import java.io.File;
 import java.time.LocalDate;
-public class main2 {
+import java.util.Scanner;
+
+public class main {
 
     public static void main(String[] args) {
-
+        System.out.println(new File(".").getAbsolutePath());
 
     Usuario u = new Usuario(
         1,

@@ -1,4 +1,4 @@
-package mjose;
+package com.projecte.models;
 
 public class Pelicula {
 

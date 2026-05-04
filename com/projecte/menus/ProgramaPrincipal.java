@@ -1,5 +1,8 @@
-package mjose;
+package com.projecte.menus;
+import com.projecte.gestors.*;
+import com.projecte.models.*;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class ProgramaPrincipal {
 
@@ -8,6 +11,7 @@ public class ProgramaPrincipal {
     private GestorLlistes gestorLlistes = new GestorLlistes();
 
     private String carpetaUsuari;
+    private int tipusCarpeta = 1; // 1 = usuario, 2 = general
 
     public ProgramaPrincipal(String carpetaUsuari) {
         this.carpetaUsuari = carpetaUsuari;
@@ -17,16 +21,21 @@ public class ProgramaPrincipal {
         int opcio;
 
         do {
-            System.out.println("\n--- MENÚ 02: LLISTATS ---");
-            System.out.println("1. Veure llistats");
-            System.out.println("2. Afegir elements");
+            System.out.println("\n--- MENÚ PRINCIPAL ---");
+            System.out.println("Treballant amb: " + (tipusCarpeta == 1 ? "USUARI" : "GENERAL"));
+            System.out.println("1. Canviar a carpeta USUARI");
+            System.out.println("2. Canviar a carpeta GENERAL");
+            System.out.println("3. Veure llistats");
+            System.out.println("4. Afegir elements");
             System.out.println("0. Eixir");
             System.out.print("Opció: ");
             opcio = Integer.parseInt(sc.nextLine());
 
             switch (opcio) {
-                case 1 -> menuLlistats();
-                case 2 -> menuAfegir();
+                case 1 -> tipusCarpeta = 1;
+                case 2 -> tipusCarpeta = 2;
+                case 3 -> menuLlistats();
+                case 4 -> menuAfegir();
                 case 0 -> System.out.println("Adéu!");
                 default -> System.out.println("Opció incorrecta");
             }
@@ -58,18 +67,34 @@ public class ProgramaPrincipal {
     }
 
     private void mostrarLlista(String fitxer) {
-        String ruta = carpetaUsuari + "/" + fitxer;
+        if (tipusCarpeta == 1) {
+            // USUARIO
+            String ruta = carpetaUsuari + "/" + fitxer;
+            var llista = gestorLlistes.carregarLlistaUsuario(ruta);
 
-        var llista = gestorLlistes.carregarLlistaUsuario(ruta);
+            if (llista.isEmpty()) {
+                System.out.println("La llista està buida.");
+                return;
+            }
 
-        if (llista.isEmpty()) {
-            System.out.println("La llista està buida.");
-            return;
-        }
+            System.out.println("\n--- LLISTA USUARI ---");
+            for (int i = 0; i < llista.size(); i++) {
+                System.out.println((i + 1) + ". " + llista.get(i));
+            }
 
-        System.out.println("\n--- LLISTA ---");
-        for (int i = 0; i < llista.size(); i++) {
-            System.out.println((i + 1) + ". " + llista.get(i));
+        } else {
+            // GENERAL
+            var llista = gestorDades.carregarLlistaGeneral(fitxer);
+
+            if (llista.isEmpty()) {
+                System.out.println("La llista està buida.");
+                return;
+            }
+
+            System.out.println("\n--- LLISTA GENERAL ---");
+            for (int i = 0; i < llista.size(); i++) {
+                System.out.println((i + 1) + ". " + llista.get(i));
+            }
         }
     }
 
@@ -104,7 +129,12 @@ public class ProgramaPrincipal {
         System.out.print("Gènere: ");
         String genere = sc.nextLine();
 
-        gestorDades.afegirPelicula(new Pelicula(titol, any, genere));
+        if (tipusCarpeta == 1) {
+            gestorLlistes.afegirPelicula(new Pelicula(titol, any, genere), carpetaUsuari);
+        } else {
+            gestorDades.afegirPelicula(new Pelicula(titol, any, genere));
+        }
+
         System.out.println("Pel·lícula afegida.");
     }
 
@@ -116,7 +146,12 @@ public class ProgramaPrincipal {
         System.out.print("Data naixement (YYYY-MM-DD): ");
         String data = sc.nextLine();
 
-        gestorDades.afegirActor(new Actor(nom, cognoms, java.time.LocalDate.parse(data)));
+        if (tipusCarpeta == 1) {
+            gestorLlistes.afegirActor(new Actor(nom, java.time.LocalDate.parse(data), cognoms), carpetaUsuari);
+        } else {
+            gestorDades.afegirActor(new Actor(nom, java.time.LocalDate.parse(data), cognoms));
+        }
+
         System.out.println("Actor afegit.");
     }
 
@@ -128,10 +163,12 @@ public class ProgramaPrincipal {
         System.out.print("Data naixement (YYYY-MM-DD): ");
         String data = sc.nextLine();
 
-        gestorDades.afegirDirector(new Director(nom, cognoms, java.time.LocalDate.parse(data)));
+        if (tipusCarpeta == 1) {
+            gestorLlistes.afegirDirector(new Director(nom, cognoms, java.time.LocalDate.parse(data)), carpetaUsuari);
+        } else {
+            gestorDades.afegirDirector(new Director(nom, cognoms, java.time.LocalDate.parse(data)));
+        }
+
         System.out.println("Director afegit.");
     }
 }
- 
-    
-

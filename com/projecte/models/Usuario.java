@@ -1,10 +1,8 @@
-
-package mjose;
-import java.io.Serializable;
+package com.projecte.models;
 import java.time.LocalDate;
 
 
-public class Usuario implements Serializable {
+public class Usuario {
 
     private int id;
     private String nom;
@@ -39,6 +37,10 @@ public class Usuario implements Serializable {
 
     public String getCognoms() {
         return cognoms;
+    }
+
+    public String getContrasenya() {
+        return contrasenya;
     }
 
     public String getEmail() {
